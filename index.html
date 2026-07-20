@@ -2,7 +2,8 @@
 <html lang="kn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ಮೊಬೈಲ್‌ನಲ್ಲಿ ಡೆಸ್ಕ್‌ಟಾಪ್‌ ವ್ಯೂಗಾಗಿ viewport ಬದಲಾವಣೆ -->
+<meta name="viewport" content="width=1200, initial-scale=1.0">
 <title>CCE Auto Save, Export & Reset Calculator</title>
 <style>
     @page {
@@ -14,12 +15,13 @@
         font-family: 'Segoe UI', Arial, sans-serif; 
         background: #f0f2f5; 
         margin: 0; 
-        padding: 10px; 
+        padding: 10px;
+        min-width: 1200px; /* ಮೊಬೈಲ್‌ನಲ್ಲಿ ಸಂಕುಚಿತವಾಗದಂತೆ ತಡೆಯಲು */
     }
     
     .container { 
-        width: 100%; 
-        max-width: 100%; 
+        width: 1200px; /* ನಿಗದಿತ ಅಗಲ */
+        margin: 0 auto;
         background: white; 
         padding: 15px; 
         border-radius: 8px; 
@@ -89,7 +91,6 @@
 
     .table-responsive { 
         width: 100%; 
-        overflow-x: auto; 
     }
     
     table { 
@@ -171,7 +172,6 @@
     .btn-container { 
         display: flex; 
         gap: 8px; 
-        flex-wrap: wrap;
     }
     
     .btn-add { background: #16a34a; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; }
@@ -181,7 +181,7 @@
     
     @media print { 
         .no-print { display: none !important; } 
-        body { background: #fff; padding: 0; margin: 0; } 
+        body { background: #fff; padding: 0; margin: 0; min-width: auto; } 
         .container { box-shadow: none; padding: 0; width: 100%; }
         table { page-break-inside: auto; }
         tr { page-break-inside: avoid; page-break-after: auto; }
@@ -255,8 +255,23 @@
     </div>
 </div>
 
+<div class="no-print" style="text-align:center;margin:15px 0;">
+  <a href="https://bilingualmediumschools.blogspot.com/2026/04/home-page.html"
+     target="_blank"
+     style="display:inline-block;
+            background:#1565c0;
+            color:#fff;
+            text-decoration:none;
+            padding:10px 18px;
+            border-radius:8px;
+            font-weight:bold;
+            font-size:16px;">
+    🌐 School Resource Centre – Click Here to Visit
+  </a>
+</div>
+
 <script>
-// 15 ಅಂಕಗಳಿಗೆ ಗ್ರೇಡ್ (ಉದಾ: FA ಪರಿವರ್ತಿತ ಅಂಕಗಳು 15ಕ್ಕೆ ಇದ್ದಾಗ)
+// (JS ಕೋಡ್‌ನಲ್ಲಿ ಯಾವುದೇ ಬದಲಾವಣೆ ಇಲ್ಲ, ಹಿಂದಿನದನ್ನೇ ಬಳಸಲಾಗಿದೆ)
 function getGrade15(m) {
     if (m >= 13.5) return { g: 'A+', c: 'g-aplus' };
     if (m >= 10.5) return { g: 'A',  c: 'g-a' };
@@ -265,8 +280,6 @@ function getGrade15(m) {
     if (m >= 0)    return { g: 'C',  c: 'g-c' };
     return { g: '-', c: '' };
 }
-
-// 20 ಅಂಕಗಳಿಗೆ ಗ್ರೇಡ್ (ಉದಾ: SA ಪರಿವರ್ತಿತ ಅಂಕಗಳು 20ಕ್ಕೆ ಇದ್ದಾಗ)
 function getGrade20(m) {
     if (m >= 18)   return { g: 'A+', c: 'g-aplus' };
     if (m >= 14)   return { g: 'A',  c: 'g-a' };
@@ -275,8 +288,6 @@ function getGrade20(m) {
     if (m >= 0)    return { g: 'C',  c: 'g-c' };
     return { g: '-', c: '' };
 }
-
-// 100 ಅಂಕಗಳಿಗೆ ಫೈನಲ್ ಗ್ರೇಡ್
 function getGrade100(m) {
     if (m >= 90)  return { g: 'A+', c: 'g-aplus' };
     if (m >= 70)  return { g: 'A',  c: 'g-a' };
@@ -285,11 +296,9 @@ function getGrade100(m) {
     if (m >= 0)   return { g: 'C',  c: 'g-c' };
     return { g: '-', c: '' };
 }
-
 function validateAndProcess(inputEl, maxVal, convType, convCellClass, grdCellClass) {
     const row = inputEl.closest('tr');
     let valStr = inputEl.value;
-    
     if (valStr === "") {
         inputEl.classList.remove('error');
         row.querySelector('.' + convCellClass).textContent = '-';
@@ -300,9 +309,7 @@ function validateAndProcess(inputEl, maxVal, convType, convCellClass, grdCellCla
         autoSaveData();
         return;
     }
-
     let val = parseFloat(valStr);
-
     if (val > maxVal) {
         alert("ಎಚ್ಚರಿಕೆ: ಗರಿಷ್ಠ ಅಂಕ (" + maxVal + ") ಕ್ಕಿಂತ ಹೆಚ್ಚು ಅಂಕಗಳನ್ನು ನಮೂದಿಸುವಂತಿಲ್ಲ!");
         inputEl.classList.add('error');
@@ -315,10 +322,8 @@ function validateAndProcess(inputEl, maxVal, convType, convCellClass, grdCellCla
     } else {
         inputEl.classList.remove('error');
     }
-
     let convVal = 0;
     let res = {};
-
     if (convType === 'fa') {
         convVal = (val / maxVal) * 15;
         res = getGrade15(convVal);
@@ -326,16 +331,13 @@ function validateAndProcess(inputEl, maxVal, convType, convCellClass, grdCellCla
         convVal = (val / maxVal) * 20;
         res = getGrade20(convVal);
     }
-
     row.querySelector('.' + convCellClass).textContent = convVal.toFixed(1);
     let gEl = row.querySelector('.' + grdCellClass);
     gEl.textContent = res.g;
     gEl.className = grdCellClass + ' ' + res.c;
-
     calculateTotal(row);
     autoSaveData();
 }
-
 function calculate(el, type) {
     const m_fa1 = parseFloat(document.getElementById('m_fa1').value) || 1;
     const m_fa2 = parseFloat(document.getElementById('m_fa2').value) || 1;
@@ -343,7 +345,6 @@ function calculate(el, type) {
     const m_fa3 = parseFloat(document.getElementById('m_fa3').value) || 1;
     const m_fa4 = parseFloat(document.getElementById('m_fa4').value) || 1;
     const m_sa2 = parseFloat(document.getElementById('m_sa2').value) || 1;
-
     if (type === 'fa1') validateAndProcess(el, m_fa1, 'fa', 'fa1-conv', 'fa1-grd');
     if (type === 'fa2') validateAndProcess(el, m_fa2, 'fa', 'fa2-conv', 'fa2-grd');
     if (type === 'sa1') validateAndProcess(el, m_sa1, 'sa', 'sa1-conv', 'sa1-grd');
@@ -351,7 +352,6 @@ function calculate(el, type) {
     if (type === 'fa4') validateAndProcess(el, m_fa4, 'fa', 'fa4-conv', 'fa4-grd');
     if (type === 'sa2') validateAndProcess(el, m_sa2, 'sa', 'sa2-conv', 'sa2-grd');
 }
-
 function calculateTotal(row) {
     let f1_val = row.querySelector('.fa1-in').value;
     let f2_val = row.querySelector('.fa2-in').value;
@@ -359,27 +359,22 @@ function calculateTotal(row) {
     let f3_val = row.querySelector('.fa3-in').value;
     let f4_val = row.querySelector('.fa4-in').value;
     let s2_val = row.querySelector('.sa2-in').value;
-
     let f1_err = row.querySelector('.fa1-in').classList.contains('error');
     let f2_err = row.querySelector('.fa2-in').classList.contains('error');
     let s1_err = row.querySelector('.sa1-in').classList.contains('error');
     let f3_err = row.querySelector('.fa3-in').classList.contains('error');
     let f4_err = row.querySelector('.fa4-in').classList.contains('error');
     let s2_err = row.querySelector('.sa2-in').classList.contains('error');
-
     let total = 0;
     let hasAny = false;
-
     if (f1_val !== "" && !f1_err) { total += parseFloat(row.querySelector('.fa1-conv').textContent) || 0; hasAny = true; }
     if (f2_val !== "" && !f2_err) { total += parseFloat(row.querySelector('.fa2-conv').textContent) || 0; hasAny = true; }
     if (s1_val !== "" && !s1_err) { total += parseFloat(row.querySelector('.sa1-conv').textContent) || 0; hasAny = true; }
     if (f3_val !== "" && !f3_err) { total += parseFloat(row.querySelector('.fa3-conv').textContent) || 0; hasAny = true; }
     if (f4_val !== "" && !f4_err) { total += parseFloat(row.querySelector('.fa4-conv').textContent) || 0; hasAny = true; }
     if (s2_val !== "" && !s2_err) { total += parseFloat(row.querySelector('.sa2-conv').textContent) || 0; hasAny = true; }
-
     let grandCell = row.querySelector('.grand-total');
     let finalGradeCell = row.querySelector('.final-grade');
-
     if (hasAny) {
         grandCell.textContent = total.toFixed(1);
         let finalRes = getGrade100(total);
@@ -391,7 +386,6 @@ function calculateTotal(row) {
         finalGradeCell.className = 'final-grade';
     }
 }
-
 function recalculateAll() {
     document.querySelectorAll('#tableBody tr').forEach(row => {
         let f1 = row.querySelector('.fa1-in'); if(f1.value !== "") calculate(f1, 'fa1');
@@ -402,7 +396,6 @@ function recalculateAll() {
         let s2 = row.querySelector('.sa2-in'); if(s2.value !== "") calculate(s2, 'sa2');
     });
 }
-
 function addRow(name = '', f1 = '', f2 = '', s1 = '', f3 = '', f4 = '', s2 = '') {
     const tbody = document.getElementById('tableBody');
     const rowCount = tbody.rows.length + 1;
@@ -441,7 +434,6 @@ function addRow(name = '', f1 = '', f2 = '', s1 = '', f3 = '', f4 = '', s2 = '')
         if(s2) calculate(tr.querySelector('.sa2-in'), 'sa2');
     }
 }
-
 function autoSaveData() {
     const data = {
         school: document.getElementById('schoolName').value,
@@ -456,7 +448,6 @@ function autoSaveData() {
         m_sa2: document.getElementById('m_sa2').value,
         students: []
     };
-
     document.querySelectorAll('#tableBody tr').forEach(row => {
         data.students.push({
             name: row.querySelector('.name-in').value,
@@ -468,10 +459,8 @@ function autoSaveData() {
             sa2: row.querySelector('.sa2-in').value
         });
     });
-
     localStorage.setItem('cce_data_v5', JSON.stringify(data));
 }
-
 function loadSavedData() {
     const saved = localStorage.getItem('cce_data_v5');
     if (saved) {
@@ -480,17 +469,14 @@ function loadSavedData() {
         document.getElementById('className').value = data.class || '';
         document.getElementById('subjectName').value = data.subject || '';
         document.getElementById('yearName').value = data.year || '';
-        
         if(data.m_fa1) document.getElementById('m_fa1').value = data.m_fa1;
         if(data.m_fa2) document.getElementById('m_fa2').value = data.m_fa2;
         if(data.m_sa1) document.getElementById('m_sa1').value = data.m_sa1;
         if(data.m_fa3) document.getElementById('m_fa3').value = data.m_fa3;
         if(data.m_fa4) document.getElementById('m_fa4').value = data.m_fa4;
         if(data.m_sa2) document.getElementById('m_sa2').value = data.m_sa2;
-
         const tbody = document.getElementById('tableBody');
         tbody.innerHTML = '';
-
         if (data.students && data.students.length > 0) {
             data.students.forEach(st => {
                 addRow(st.name, st.fa1, st.fa2, st.sa1, st.fa3, st.fa4, st.sa2);
@@ -500,7 +486,6 @@ function loadSavedData() {
     }
     for(let i=0; i<10; i++) addRow();
 }
-
 function resetAllData() {
     if (confirm("ಎಲ್ಲಾ ಮಾಹಿತಿಯನ್ನು ಅಳಿಸಿ ಹೊಸದಾಗಿ ಆರಂಭಿಸಲು ಬಯಸುತ್ತೀರಾ?")) {
         localStorage.removeItem('cce_data_v5');
@@ -512,15 +497,12 @@ function resetAllData() {
         for(let i=0; i<10; i++) addRow();
     }
 }
-
 function exportToExcel() {
     let csv = [];
     let rows = document.querySelectorAll("table tr");
-    
     csv.push(`"ಶಾಲೆಯ ಹೆಸರು:","${document.getElementById('schoolName').value}","ತರಗತಿ:","${document.getElementById('className').value}","ವಿಷಯ:","${document.getElementById('subjectName').value}","ಸಾಲು:","${document.getElementById('yearName').value}"`);
     csv.push(`"ಗರಿಷ್ಠ ಅಂಕಗಳು ->","","FA-1:","${document.getElementById('m_fa1').value}","FA-2:","${document.getElementById('m_fa2').value}","SA-1:","${document.getElementById('m_sa1').value}","FA-3:","${document.getElementById('m_fa3').value}","FA-4:","${document.getElementById('m_fa4').value}","SA-2:","${document.getElementById('m_sa2').value}"`);
     csv.push("");
-
     for (let i = 0; i < rows.length; i++) {
         let row = [], cols = rows[i].querySelectorAll("td, th");
         for (let j = 0; j < cols.length; j++) {
@@ -531,7 +513,6 @@ function exportToExcel() {
         }
         csv.push(row.join(","));
     }
-
     let csvFile = new Blob(["\uFEFF" + csv.join("\n")], { type: "text/csv;charset=utf-8;" });
     let downloadLink = document.createElement("a");
     downloadLink.download = "CCE_Marks_Report.csv";
@@ -541,50 +522,8 @@ function exportToExcel() {
     downloadLink.click();
     document.body.removeChild(downloadLink);
 }
-
 window.onload = loadSavedData;
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<style>
-@media print{
-  .no-print{
-    display:none !important;
-  }
-}
-</style>
-
-<div class="no-print" style="text-align:center;margin:15px 0;">
-  <a href="https://bilingualmediumschools.blogspot.com/2026/04/home-page.html"
-     target="_blank"
-     style="display:inline-block;
-            background:#1565c0;
-            color:#fff;
-            text-decoration:none;
-            padding:10px 18px;
-            border-radius:8px;
-            font-weight:bold;
-            font-size:16px;">
-    🌐 School Resource Centre – Click Here to Visit
-  </a>
-</div>
