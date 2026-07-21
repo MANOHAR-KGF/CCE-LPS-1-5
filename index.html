@@ -2,7 +2,7 @@
 <html lang="kn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=1200, initial-scale=1.0">
 <title>CCE Auto Save, Export & Reset Calculator</title>
 <style>
     @page {
@@ -15,11 +15,12 @@
         background: #f0f2f5; 
         margin: 0; 
         padding: 10px; 
+        min-width: 1150px; /* ಮೊಬೈಲ್‌ನಲ್ಲಿಯೂ ಟೇಬಲ್ ಸಂಕುಚಿತಗೊಳ್ಳದಂತೆ ತಡೆಯಲು */
     }
     
     .container { 
-        width: 100%; 
-        max-width: 100%; 
+        width: 1150px; 
+        margin: 0 auto;
         background: white; 
         padding: 15px; 
         border-radius: 8px; 
@@ -203,7 +204,7 @@
     
     @media print { 
         .no-print { display: none !important; } 
-        body { background: #fff; padding: 0; margin: 0; } 
+        body { background: #fff; padding: 0; margin: 0; min-width: auto; } 
         .container { box-shadow: none; padding: 0; width: 100%; }
         table { page-break-inside: auto; }
         tr { page-break-inside: avoid; page-break-after: auto; }
@@ -433,7 +434,6 @@ function recalculateAll() {
     });
 }
 
-// ನಿರ್ದಿಷ್ಟ ಕಾಲಮ್ (ಉದಾ: fa1, fa2, sa1 ಇತ್ಯಾದಿ) ಮಾತ್ರ ರೀಸೆಟ್ ಮಾಡಲು
 function resetColumn(colType) {
     if (confirm("ಈ ಕಾಲಮ್‌ನಲ್ಲಿರುವ ಎಲ್ಲಾ ವಿದ್ಯಾರ್ಥಿಗಳ ಅಂಕಗಳನ್ನು ಅಳಿಸಲು ಬಯಸುತ್ತೀರಾ?")) {
         document.querySelectorAll('#tableBody tr').forEach(row => {
@@ -456,7 +456,6 @@ function resetColumn(colType) {
     }
 }
 
-// ಎಲ್ಲಾ ವಿದ್ಯಾರ್ಥಿಗಳ ಅಂಕಗಳನ್ನು ಮಾತ್ರ (ಹೆಸರುಗಳನ್ನು ಹಾಗೆಯೇ ಉಳಿಸಿ) ರೀಸೆಟ್ ಮಾಡಲು
 function resetAllMarksOnly() {
     if (confirm("ವಿದ್ಯಾರ್ಥಿಗಳ ಹೆಸರುಗಳನ್ನು ಹಾಗೆಯೇ ಉಳಿಸಿ, ಎಲ್ಲಾ ಅಂಕಗಳನ್ನು ಮಾತ್ರ ಅಳಿಸಲು ಬಯಸುತ್ತೀರಾ?")) {
         document.querySelectorAll('#tableBody tr').forEach(row => {
@@ -600,7 +599,6 @@ function exportToExcel() {
     csv.push("");
 
     for (let i = 0; i < rows.length; i++) {
-        // Skip the reset buttons row during export
         if (rows[i].classList.contains('reset-btn-row')) continue;
         
         let row = [], cols = rows[i].querySelectorAll("td, th");
@@ -626,38 +624,35 @@ function exportToExcel() {
 window.onload = loadSavedData;
 </script>
 
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <style>
 @media print{
   .no-print{
     display:none !important;
   }
 }
+</style>
+
+<div class="no-print" style="text-align:center;margin:15px 0;">
+  <a href
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </style>
 
 <div class="no-print" style="text-align:center;margin:15px 0;">
